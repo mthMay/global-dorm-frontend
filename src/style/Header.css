@@ -1,0 +1,15 @@
+.custom-button {
+    margin: 3px;
+    font-weight: bold;
+    color: brown;
+    border: 2px solid brown;
+    background-color: rgba(34,37,41);
+    outline: none;
+}
+
+.custom-button:hover, .custom-button:active {
+    background-color: brown !important;
+    color: white;
+    border-color: brown !important;
+    outline: none;
+}

@@ -1,0 +1,43 @@
+.error-color {
+    color: red;
+}
+
+.room-overview {
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.view-details-button {
+    margin: 3px;
+    font-weight: bold;
+    color: white;
+    border: 2px solid brown;
+    background-color: brown;
+    outline: none;
+}
+
+.view-details-button:hover, .view-details-button:active {
+    background-color: white !important;
+    color: brown;
+    border-color: brown !important;
+    outline: none;
+}
+
+.room-details {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.room-details h3 {
+    color: brown;
+}
+
+.room-details p {
+    font-size: 16px;
+    margin: 8px 0;
+}
+

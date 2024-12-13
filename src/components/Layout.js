@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header'; // Adjust the import path as necessary
+import Header from './Header';
 
 const Layout = ({ children }) => {
     return (

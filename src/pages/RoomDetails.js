@@ -4,7 +4,7 @@ import api from '../api/apiConfig';
 import '../style/Rooms.css';
 
 const RoomDetails = () => {
-    const {id} = useParams(); // To extract the room_id from URL
+    const {id} = useParams(); // To extract the id from URL
     const [room, setRoom] = useState();
     const [error, setError] = useState(null);
 

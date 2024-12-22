@@ -1,12 +1,16 @@
 import {useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import api from '../api/apiConfig';
 import '../style/Rooms.css';
+import UserContext from "../components/UserContext";
 
 const RoomDetails = () => {
     const {id} = useParams(); // To extract the id from URL
+    const {user} = useContext(UserContext);
     const [room, setRoom] = useState();
+    const [userId, setUserId] = useState(null);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         api.get(`/rooms/${id}`)
@@ -16,6 +20,35 @@ const RoomDetails = () => {
                 setError(err.message);
             })
     }, [id]);
+
+    useEffect(() => {
+        if (user) {
+            api.get(`/users/${user.username}`)
+                .then(response => setUserId(response.data.id))
+                .catch(err => {
+                    console.error("Error fetching user details: ", err);
+                });
+        }
+    }, [user]);
+
+    const handleApply = async () => {
+        if (!userId) {
+            setMessage("Please log in to apply for this room.");
+            return;
+        }
+
+        try {
+            const response = await api.post('/applications/apply', {
+                roomId: id,
+                applicantId: userId,
+            });
+
+            setMessage("Application submitted successfully!");
+        } catch (err) {
+            console.error("Error applying for room:", err.response || err.message);
+            setMessage(err.response?.data || "An unexpected error occurred.");
+        }
+    };
 
     if (error) {
         return <p className='error-color'>Error: {error}</p>;
@@ -40,6 +73,9 @@ const RoomDetails = () => {
             <p>Price Per Month: £{room.pricePerMonthGbp}</p>
             <p>Available From: {room.availabilityDate}</p>
             <p>Spoken Language: {room.spokenLanguages.join(", ")}</p>
+
+            <button onClick={handleApply} className="apply-button">Apply</button>
+            {message && <p>{message}</p>}
         </div>
     )
 }

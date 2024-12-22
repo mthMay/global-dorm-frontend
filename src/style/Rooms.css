@@ -8,7 +8,7 @@
     padding: 10px;
 }
 
-.view-details-button {
+.view-details-button, .apply-button{
     margin: 3px;
     font-weight: bold;
     color: white;
@@ -17,7 +17,7 @@
     outline: none;
 }
 
-.view-details-button:hover, .view-details-button:active {
+.view-details-button:hover, .view-details-button:active, .apply-button:hover, .apply-button:active {
     background-color: white !important;
     color: brown;
     border-color: brown !important;

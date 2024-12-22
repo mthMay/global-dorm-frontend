@@ -1,18 +1,21 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHome} from '@fortawesome/free-solid-svg-icons';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {NavLink} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import '../style/Header.css'
+import {useContext} from "react";
+import UserContext from "./UserContext";
 
 const Header = () => {
+    const {user, logout} = useContext(UserContext);
+
     return(
         <Navbar bg='dark' variant='dark' expand='lg'>
             <Container fluid>
                 <Navbar.Brand href="/" style={{color: 'brown'}}>
-                    <FontAwesomeIcon icon={faHome}/> UK Dorm
+                    <FontAwesomeIcon icon="fa-solid fa-house" /> UK Dorm
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls='navbarScroll'/>
                 <Navbar.Collapse id='navbarScroll'>
@@ -21,8 +24,17 @@ const Header = () => {
                         style={{maxHeight: '100px'}} navbarScroll>
                         <NavLink className="nav-link" to='/rooms'>Rooms</NavLink>
                     </Nav>
-                    <Button className='custom-button' >Login</Button>
-                    <Button className='custom-button'>Register</Button>
+                    {user ? (
+                        <span className="welcome-message" style={{color: 'white'}}>
+                            Welcome, {user.username}
+                            <Button className="custom-button" onClick={() => window.location.href = '/'}>Logout</Button>
+                        </span>
+                    ) : (
+                        <>
+                            <Button className='custom-button' onClick={() => window.location.href = '/login'}>Login</Button>
+                            <Button className='custom-button' onClick={() => window.location.href = '/register'}>Register</Button>
+                        </>
+                    )}
                 </Navbar.Collapse>
             </Container>
         </Navbar>

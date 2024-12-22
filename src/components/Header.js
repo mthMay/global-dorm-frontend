@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import '../style/Header.css'
 import {useContext} from "react";
@@ -10,6 +10,12 @@ import UserContext from "./UserContext";
 
 const Header = () => {
     const {user, logout} = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return(
         <Navbar bg='dark' variant='dark' expand='lg'>
@@ -27,12 +33,12 @@ const Header = () => {
                     {user ? (
                         <span className="welcome-message" style={{color: 'white'}}>
                             Welcome, {user.username}
-                            <Button className="custom-button" onClick={() => window.location.href = '/'}>Logout</Button>
+                            <Button className="custom-button" onClick={handleLogout}>Logout</Button>
                         </span>
                     ) : (
                         <>
-                            <Button className='custom-button' onClick={() => window.location.href = '/login'}>Login</Button>
-                            <Button className='custom-button' onClick={() => window.location.href = '/register'}>Register</Button>
+                            <Button className='custom-button' onClick={() => navigate('/login')}>Login</Button>
+                            <Button className='custom-button' onClick={() => navigate('/register')}>Register</Button>
                         </>
                     )}
                 </Navbar.Collapse>

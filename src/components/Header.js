@@ -1,4 +1,3 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -21,7 +20,7 @@ const Header = () => {
         <Navbar bg='dark' variant='dark' expand='lg'>
             <Container fluid>
                 <Navbar.Brand href="/" style={{color: 'brown'}}>
-                    <FontAwesomeIcon icon="fa-solid fa-house" /> UK Dorm
+                    UK Dorm
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls='navbarScroll'/>
                 <Navbar.Collapse id='navbarScroll'>
@@ -33,6 +32,7 @@ const Header = () => {
                     {user ? (
                         <span className="welcome-message" style={{color: 'white'}}>
                             Welcome, {user.username}
+                            <Button className="custom-button" onClick={() => navigate('/profile')}>Profile</Button>
                             <Button className="custom-button" onClick={handleLogout}>Logout</Button>
                         </span>
                     ) : (

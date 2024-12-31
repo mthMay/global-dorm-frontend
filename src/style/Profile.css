@@ -1,0 +1,55 @@
+.profile {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.applications {
+    margin-top: 20px;
+}
+
+.application {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.application p {
+    margin: 5px 0;
+}
+
+.application button {
+    margin: 3px;
+    font-weight: bold;
+    color: white;
+    border: 2px solid brown;
+    border-radius: 5px;
+    background-color: brown;
+    outline: none;
+}
+
+.application button:hover {
+    background-color: white !important;
+    color: brown;
+    border-color: brown !important;
+    border-radius: 5px;
+    outline: none;
+}
+
+.application button:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+.room-link {
+    color: brown;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.room-link:hover {
+    text-decoration: underline;
+}

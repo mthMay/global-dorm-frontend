@@ -13,6 +13,9 @@ const RoomDetails = () => {
     const [message, setMessage] = useState('');
     const [weather, setWeather] = useState(null);
     const [loadingWeather, setLoadingWeather] = useState(false);
+    const [destinationPostcode, setDestinationPostcode] = useState("");
+    const [distance, setDistance] = useState(null);
+    const [loadingDistance, setLoadingDistance] = useState(false);
 
     useEffect(() => {
         api.get(`/rooms/${id}`)
@@ -87,6 +90,37 @@ const RoomDetails = () => {
         }
     };
 
+    const handleCalculateDistance = async () => {
+        if (!room?.address?.postcode || !destinationPostcode) {
+            setError("Both origin and destination postcodes are required!");
+            return;
+        }
+
+        setLoadingDistance(true);
+        setError(null);
+        setDistance(null);
+
+        try {
+            const encodedOriginPostcode = encodeURIComponent(room.address.postcode).replace(/%20/g, '+');
+            const encodedDestinationPostcode = encodeURIComponent(destinationPostcode).replace(/%20/g, '+');
+
+            const originResponse = await api.get('/geocode/?', { params: { postcode: encodedOriginPostcode} });
+            const { latitude: originLat, longitude: originLon } = originResponse.data;
+
+            const destinationResponse = await api.get('/geocode/?', { params: { postcode: encodedDestinationPostcode} });
+            const { latitude: destLat, longitude: destLon } = destinationResponse.data;
+
+            const distanceResponse = await api.get('/distance/?', {
+                params: { originLat, originLon, destLat, destLon },
+            });
+            setDistance(distanceResponse.data);
+        } catch (err) {
+            setError("Failed to calculate distance.");
+        } finally {
+            setLoadingDistance(false);
+        }
+    }
+
     if (error) {
         return <p className='error-color'>Error: {error}</p>;
     }
@@ -126,7 +160,23 @@ const RoomDetails = () => {
                     <p><strong>Max Wind Speed:</strong> {weather.maxWindSpeed} km/h</p>
                 </div>
             )}
-
+            <div className="distance-calculation">
+                <h4>Calculate Distance</h4>
+                <input type="text"
+                       placeholder="Enter destination postcode"
+                       value={destinationPostcode}
+                       onChange={(e) => setDestinationPostcode(e.target.value)}
+                />
+                <button onClick={handleCalculateDistance} className="distance-button">
+                    {loadingDistance ? "Calculating..." : "Calculate Distance"}
+                </button>
+                {distance && (
+                    <div className="distance-info">
+                        <p><strong>Distance: </strong> {distance.distance / 1000} km </p>
+                        <p><strong>Duration: </strong> {Math.round(distance.duration / 60)} minutes</p>
+                    </div>
+                )}
+            </div>
             {message && <p>{message}</p>}
         </div>
     )

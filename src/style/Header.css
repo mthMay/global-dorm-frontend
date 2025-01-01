@@ -1,14 +1,16 @@
 .custom-button {
-    margin: 3px;
-    font-weight: bold;
-    color: brown;
-    border: 2px solid brown;
-    background-color: rgba(34,37,41);
+    border: 1px solid brown;
     outline: none;
+    margin: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: white;
+    background-color: brown;
+    border-radius: 5px;
 }
 
 .custom-button:hover, .custom-button:active {
-    background-color: brown !important;
+    background-color: rgba(34,37,41) !important;
     color: white;
     border-color: brown !important;
     outline: none;

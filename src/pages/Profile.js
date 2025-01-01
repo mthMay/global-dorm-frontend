@@ -73,13 +73,13 @@ const Profile = () => {
                             <p><strong>Status:</strong> {app.status}</p>
                             <button
                                 onClick={() => handleUpdateStatus(app.id, "accept")}
-                                disabled={app.status !== "PENDING"}
+                                disabled={!(app.status === "PENDING" || app.status === "ACCEPTED" || app.status === "REJECTED")}
                             >
                                 Accept
                             </button>
                             <button
                                 onClick={() => handleUpdateStatus(app.id, "reject")}
-                                disabled={app.status !== "PENDING"}
+                                disabled={!(app.status === "PENDING" || app.status === "ACCEPTED" || app.status === "REJECTED")}
                             >
                                 Reject
                             </button>

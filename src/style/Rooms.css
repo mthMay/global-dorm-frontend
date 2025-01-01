@@ -8,16 +8,17 @@
     padding: 10px;
 }
 
-.view-details-button, .apply-button{
-    margin: 3px;
-    font-weight: bold;
+.view-details-button, .apply-button, .weather-button{
+    margin: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
     color: white;
-    border: 2px solid brown;
     background-color: brown;
-    outline: none;
+    border: 1px solid brown;
+    border-radius: 5px;
 }
 
-.view-details-button:hover, .view-details-button:active, .apply-button:hover, .apply-button:active {
+.view-details-button:hover, .view-details-button:active, .apply-button:hover, .apply-button:active, .weather-button:hover {
     background-color: white !important;
     color: brown;
     border-color: brown !important;
@@ -25,19 +26,56 @@
 }
 
 .room-details {
-    margin: 20px;
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
 }
 
 .room-details h3 {
+    margin-bottom: 20px;
     color: brown;
+    font-size: 24px;
 }
 
 .room-details p {
-    font-size: 16px;
-    margin: 8px 0;
+    margin: 5px 0;
+    color: #555;
+    line-height: 1.6;
 }
+
+.weather-info {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #e9f7ef;
+    color: #155724;
+}
+
+.weather-info h4 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #155724;
+}
+
+.weather-info p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.error-color {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+}
+
+.message {
+    margin-top: 10px;
+    color: green;
+    font-weight: bold;
+}
+
 

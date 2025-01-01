@@ -11,6 +11,8 @@ const RoomDetails = () => {
     const [userId, setUserId] = useState(null);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState('');
+    const [weather, setWeather] = useState(null);
+    const [loadingWeather, setLoadingWeather] = useState(false);
 
     useEffect(() => {
         api.get(`/rooms/${id}`)
@@ -38,7 +40,7 @@ const RoomDetails = () => {
         }
 
         try {
-            const response = await api.post('/applications/apply', {
+            await api.post('/applications/apply', {
                 roomId: id,
                 applicantId: userId,
             });
@@ -47,6 +49,41 @@ const RoomDetails = () => {
         } catch (err) {
             console.error("Error applying for room:", err.response || err.message);
             setMessage(err.response?.data || "An unexpected error occurred.");
+        }
+    };
+
+    const handleCheckWeather = async () => {
+        if (!room?.address?.postcode) {
+            setError("Postcode is not available for this room.");
+            return;
+        }
+
+        setLoadingWeather(true);
+        setError(null);
+        setWeather(null);
+
+        try {
+            const encodedPostcode = encodeURIComponent(room.address.postcode).replace(/%20/g, '+');
+            const geoResponse = await api.get('/geocode/?', { params: { postcode: encodedPostcode } });
+            const { latitude, longitude } = geoResponse.data;
+
+            const params = {
+                lon: longitude,
+                lat: latitude,
+                lang: "en",
+                unit: "metric",
+                output: "json",
+            };
+            console.log("Fetching weather data with params:", params);
+
+            const weatherResponse = await api.get('/weather/?',{ params });
+            console.log(weatherResponse);
+            setWeather(weatherResponse.data);
+        } catch (err) {
+            console.error("Error checking weather:", err);
+            setError("Failed to fetch weather data.");
+        } finally {
+            setLoadingWeather(false);
         }
     };
 
@@ -64,7 +101,7 @@ const RoomDetails = () => {
             <p>City: {room.address.city}</p>
             <p>County: {room.address.county}</p>
             <p>Postcode: {room.address.postcode}</p>
-            <p style={{ fontWeight: "bold" }}>Details:</p>
+            <p style={{fontWeight: "bold"}}>Details:</p>
             <p>Furnished: {room.details.furnished ? "Yes" : "No"}</p>
             <p>Amenities: {room.details.amenities.join(", ")}</p>
             <p>Shared with: {room.details.sharedWith}</p>
@@ -75,6 +112,21 @@ const RoomDetails = () => {
             <p>Spoken Language: {room.spokenLanguages.join(", ")}</p>
 
             <button onClick={handleApply} className="apply-button">Apply</button>
+            <button onClick={handleCheckWeather} className="weather-button">
+                {loadingWeather ? "Checking Weather..." : "Check Weather"}
+            </button>
+            {error && <p className="error">{error}</p>}
+            {weather && (
+                <div className="weather-info">
+                    <h4>Weather Information:</h4>
+                    <p><strong>Date:</strong> {weather.date}</p>
+                    <p><strong>Weather:</strong> {weather.weather}</p>
+                    <p><strong>Max Temperature:</strong> {weather.maxTemperature}°C</p>
+                    <p><strong>Min Temperature:</strong> {weather.minTemperature}°C</p>
+                    <p><strong>Max Wind Speed:</strong> {weather.maxWindSpeed} km/h</p>
+                </div>
+            )}
+
             {message && <p>{message}</p>}
         </div>
     )

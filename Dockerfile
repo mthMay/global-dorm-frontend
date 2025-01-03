@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:16
+FROM node:16 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,4 +15,5 @@ COPY . .
 EXPOSE 3000
 
 # Command to start the React development server
-CMD ["npm", "start"]
+CMD ["npm", "start", "--", "--host", "0.0.0.0"]
+

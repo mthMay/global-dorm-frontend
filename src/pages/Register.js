@@ -16,7 +16,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const response = await api.post('/users/register', formData);
+            const response = await api.post('/api/users/register', formData);
             setMessage(response.data);
             login({ username: formData.username });
         } catch (error) {

@@ -11,9 +11,9 @@ const Profile = () => {
 
     useEffect(() => {
         if (user) {
-            api.get(`/users/${user.username}`)
+            api.get(`/api/users/${user.username}`)
                 .then(response => {
-                    return api.get(`/applications/applicant/${response.data.id}`);
+                    return api.get(`/api/applications/applicant/${response.data.id}`);
                 })
                 .then(async response => {
                     const apps = response.data;
@@ -21,7 +21,7 @@ const Profile = () => {
                     const activeApplications = apps.filter(app => app.status !== "CANCELLED");
                     const applicationsWithRoomNames = await Promise.all(
                         activeApplications.map(async app => {
-                            const roomResponse = await api.get(`/rooms/${app.roomId}`);
+                            const roomResponse = await api.get(`/api/rooms/${app.roomId}`);
                             return { ...app, roomName: roomResponse.data.name };
                         })
                     );
@@ -36,7 +36,7 @@ const Profile = () => {
 
     const handleUpdateStatus = async (applicationId, status) => {
         try {
-            await api.patch(`/applications/${status}/${applicationId}`);
+            await api.patch(`/api/applications/${status}/${applicationId}`);
             if (status === "CANCELLED") {
                 setApplications(applications.filter(app => app.id !== applicationId));
             } else {
@@ -66,7 +66,7 @@ const Profile = () => {
                         <div key={app.id} className="application">
                             <p>
                                 <strong>Room Name:</strong>{" "}
-                                <Link to={`/roomDetails/${app.roomId}`} className="room-link">
+                                <Link to={`/api/roomDetails/${app.roomId}`} className="room-link">
                                     {app.roomName || app.roomId}
                                 </Link>
                             </p>

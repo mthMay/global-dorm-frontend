@@ -9,7 +9,7 @@ const Rooms = () =>{
     const[error, setError] = useState(null);
 
     useEffect(() => {
-        api.get('/rooms/all')
+        api.get('/api/rooms/all')
             .then (response => setRooms(response.data))
             .catch (err => {
                 console.error("Error fetching rooms: ", err);

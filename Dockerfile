@@ -11,9 +11,10 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Expose the port that the React development server runs on
-EXPOSE 3000
+RUN npm run build
 
-# Command to start the React development server
-CMD ["npm", "start", "--", "--host", "0.0.0.0"]
-
+# Serve
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

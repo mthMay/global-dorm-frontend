@@ -18,7 +18,7 @@ const RoomDetails = () => {
     const [loadingDistance, setLoadingDistance] = useState(false);
 
     useEffect(() => {
-        api.get(`/rooms/${id}`)
+        api.get(`/api/rooms/${id}`)
             .then((response) => setRoom(response.data ))
             .catch((err) => {
                 console.error("Error fetching room details: ", err);
@@ -28,7 +28,7 @@ const RoomDetails = () => {
 
     useEffect(() => {
         if (user) {
-            api.get(`/users/${user.username}`)
+            api.get(`/api/users/${user.username}`)
                 .then(response => setUserId(response.data.id))
                 .catch(err => {
                     console.error("Error fetching user details: ", err);
@@ -43,7 +43,7 @@ const RoomDetails = () => {
         }
 
         try {
-            await api.post('/applications/apply', {
+            await api.post('/api/applications/apply', {
                 roomId: id,
                 applicantId: userId,
             });
@@ -67,7 +67,7 @@ const RoomDetails = () => {
 
         try {
             const encodedPostcode = encodeURIComponent(room.address.postcode).replace(/%20/g, '+');
-            const geoResponse = await api.get('/geocode/?', { params: { postcode: encodedPostcode } });
+            const geoResponse = await api.get('/api/geocode/?', { params: { postcode: encodedPostcode } });
             const { latitude, longitude } = geoResponse.data;
 
             const params = {
@@ -79,7 +79,7 @@ const RoomDetails = () => {
             };
             console.log("Fetching weather data with params:", params);
 
-            const weatherResponse = await api.get('/weather/?',{ params });
+            const weatherResponse = await api.get('/api/weather/?',{ params });
             console.log(weatherResponse);
             setWeather(weatherResponse.data);
         } catch (err) {
@@ -104,13 +104,13 @@ const RoomDetails = () => {
             const encodedOriginPostcode = encodeURIComponent(room.address.postcode).replace(/%20/g, '+');
             const encodedDestinationPostcode = encodeURIComponent(destinationPostcode).replace(/%20/g, '+');
 
-            const originResponse = await api.get('/geocode/?', { params: { postcode: encodedOriginPostcode} });
+            const originResponse = await api.get('/api/geocode/?', { params: { postcode: encodedOriginPostcode} });
             const { latitude: originLat, longitude: originLon } = originResponse.data;
 
-            const destinationResponse = await api.get('/geocode/?', { params: { postcode: encodedDestinationPostcode} });
+            const destinationResponse = await api.get('/api/geocode/?', { params: { postcode: encodedDestinationPostcode} });
             const { latitude: destLat, longitude: destLon } = destinationResponse.data;
 
-            const distanceResponse = await api.get('/distance/?', {
+            const distanceResponse = await api.get('/api/distance/?', {
                 params: { originLat, originLon, destLat, destLon },
             });
             setDistance(distanceResponse.data);

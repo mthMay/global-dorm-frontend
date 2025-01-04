@@ -66,7 +66,7 @@ const Profile = () => {
                         <div key={app.id} className="application">
                             <p>
                                 <strong>Room Name:</strong>{" "}
-                                <Link to={`/api/roomDetails/${app.roomId}`} className="room-link">
+                                <Link to={`/roomDetails/${app.roomId}`} className="room-link">
                                     {app.roomName || app.roomId}
                                 </Link>
                             </p>

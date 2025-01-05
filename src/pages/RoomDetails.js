@@ -146,6 +146,7 @@ const RoomDetails = () => {
             <p>Spoken Language: {room.spokenLanguages.join(", ")}</p>
 
             <button onClick={handleApply} className="apply-button">Apply</button>
+            {message && <p>{message}</p>}
             <button onClick={handleCheckWeather} className="weather-button">
                 {loadingWeather ? "Checking Weather..." : "Check Weather"}
             </button>
@@ -177,7 +178,6 @@ const RoomDetails = () => {
                     </div>
                 )}
             </div>
-            {message && <p>{message}</p>}
         </div>
     )
 }

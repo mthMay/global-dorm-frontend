@@ -66,20 +66,14 @@ const RoomDetails = () => {
         setWeather(null);
 
         try {
-            const encodedPostcode = encodeURIComponent(room.address.postcode).replace(/%20/g, '+');
-            const geoResponse = await api.get('/api/geocode/?', { params: { postcode: encodedPostcode } });
-            const { latitude, longitude } = geoResponse.data;
-
-            const params = {
-                lon: longitude,
-                lat: latitude,
-                lang: "en",
-                unit: "metric",
-                output: "json",
-            };
-            console.log("Fetching weather data with params:", params);
-
-            const weatherResponse = await api.get('/api/weather/?',{ params });
+            const weatherResponse = await api.get('/api/weather/', {
+                params: {
+                    postcode: room.address.postcode,
+                    lang: "en",
+                    unit: "metric",
+                    output: "json",
+                }
+            });
             console.log(weatherResponse);
             setWeather(weatherResponse.data);
         } catch (err) {
@@ -101,25 +95,20 @@ const RoomDetails = () => {
         setDistance(null);
 
         try {
-            const encodedOriginPostcode = encodeURIComponent(room.address.postcode).replace(/%20/g, '+');
-            const encodedDestinationPostcode = encodeURIComponent(destinationPostcode).replace(/%20/g, '+');
-
-            const originResponse = await api.get('/api/geocode/?', { params: { postcode: encodedOriginPostcode} });
-            const { latitude: originLat, longitude: originLon } = originResponse.data;
-
-            const destinationResponse = await api.get('/api/geocode/?', { params: { postcode: encodedDestinationPostcode} });
-            const { latitude: destLat, longitude: destLon } = destinationResponse.data;
-
-            const distanceResponse = await api.get('/api/distance/?', {
-                params: { originLat, originLon, destLat, destLon },
+            const distanceResponse = await api.get('/api/distance/', {
+                params: {
+                    originPostcode: room.address.postcode,
+                    destinationPostcode: destinationPostcode,
+                }
             });
             setDistance(distanceResponse.data);
         } catch (err) {
+            console.error("Error calculating distance:", err);
             setError("Failed to calculate distance.");
         } finally {
             setLoadingDistance(false);
         }
-    }
+    };
 
     if (error) {
         return <p className='error-color'>Error: {error}</p>;

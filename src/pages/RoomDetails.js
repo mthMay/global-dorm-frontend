@@ -85,10 +85,6 @@ const RoomDetails = () => {
     };
 
     const handleCalculateDistance = async () => {
-        if (!room?.address?.postcode || !destinationPostcode) {
-            setError("Both origin and destination postcodes are required!");
-            return;
-        }
 
         setLoadingDistance(true);
         setError(null);
@@ -152,14 +148,20 @@ const RoomDetails = () => {
             )}
             <div className="distance-calculation">
                 <h4>Calculate Distance</h4>
-                <input type="text"
-                       placeholder="Enter destination postcode"
-                       value={destinationPostcode}
-                       onChange={(e) => setDestinationPostcode(e.target.value)}
-                />
-                <button onClick={handleCalculateDistance} className="distance-button">
-                    {loadingDistance ? "Calculating..." : "Calculate Distance"}
-                </button>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleCalculateDistance();
+                }}>
+                    <input type="text"
+                           placeholder="Enter destination postcode"
+                           value={destinationPostcode}
+                           onChange={(e) => setDestinationPostcode(e.target.value)}
+                           required
+                    />
+                    <button type="submit" className="distance-button">
+                        {loadingDistance ? "Calculating..." : "Calculate Distance"}
+                    </button>
+                </form>
                 {distance && (
                     <div className="distance-info">
                         <p><strong>Distance: </strong> {distance.distance / 1000} km </p>

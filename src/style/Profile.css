@@ -52,3 +52,9 @@
 .room-link:hover {
     text-decoration: underline;
 }
+
+.error {
+    margin-top: 10px;
+    color: red !important;
+    font-weight: bold;
+}

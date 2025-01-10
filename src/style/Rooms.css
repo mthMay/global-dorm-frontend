@@ -74,7 +74,7 @@
 
 .message {
     margin-top: 10px;
-    color: green;
+    color: green !important;
     font-weight: bold;
 }
 
@@ -84,6 +84,12 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
+}
+
+.error {
+    margin-top: 10px;
+    color: red !important;
+    font-weight: bold;
 }
 
 .distance-calculation h4 {

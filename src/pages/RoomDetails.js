@@ -9,8 +9,8 @@ const RoomDetails = () => {
     const {user} = useContext(UserContext);
     const [room, setRoom] = useState();
     const [userId, setUserId] = useState(null);
-    const [error, setError] = useState(null);
     const [message, setMessage] = useState('');
+    const [error, setError] = useState(null);
     const [weather, setWeather] = useState(null);
     const [loadingWeather, setLoadingWeather] = useState(false);
     const [destinationPostcode, setDestinationPostcode] = useState("");
@@ -21,8 +21,7 @@ const RoomDetails = () => {
         api.get(`/api/rooms/${id}`)
             .then((response) => setRoom(response.data ))
             .catch((err) => {
-                console.error("Error fetching room details: ", err);
-                setError(err.message);
+                setError("Error fetching room details.")
             })
     }, [id]);
 
@@ -31,14 +30,14 @@ const RoomDetails = () => {
             api.get(`/api/users/${user.username}`)
                 .then(response => setUserId(response.data.id))
                 .catch(err => {
-                    console.error("Error fetching user details: ", err);
+                    setError("Error fetching user details.")
                 });
         }
     }, [user]);
 
     const handleApply = async () => {
         if (!userId) {
-            setMessage("Please log in to apply for this room.");
+            setError("Please log in to apply for this room.");
             return;
         }
 
@@ -50,8 +49,7 @@ const RoomDetails = () => {
 
             setMessage("Application submitted successfully!");
         } catch (err) {
-            console.error("Error applying for room:", err.response || err.message);
-            setMessage(err.response?.data || "An unexpected error occurred.");
+            setError(err.response.data || "An unexpected error occurred.");
         }
     };
 
@@ -77,7 +75,6 @@ const RoomDetails = () => {
             console.log(weatherResponse);
             setWeather(weatherResponse.data);
         } catch (err) {
-            console.error("Error checking weather:", err);
             setError("Failed to fetch weather data.");
         } finally {
             setLoadingWeather(false);
@@ -99,16 +96,11 @@ const RoomDetails = () => {
             });
             setDistance(distanceResponse.data);
         } catch (err) {
-            console.error("Error calculating distance:", err);
             setError("Failed to calculate distance.");
         } finally {
             setLoadingDistance(false);
         }
     };
-
-    if (error) {
-        return <p className='error-color'>Error: {error}</p>;
-    }
 
     if (!room) {
         return <p>Loading room details...</p>;
@@ -131,11 +123,11 @@ const RoomDetails = () => {
             <p>Spoken Language: {room.spokenLanguages.join(", ")}</p>
 
             <button onClick={handleApply} className="apply-button">Apply</button>
-            {message && <p>{message}</p>}
+            {message && <p className="message">{message}</p>}
+            {error && <p className="error">{error}</p>}
             <button onClick={handleCheckWeather} className="weather-button">
                 {loadingWeather ? "Checking Weather..." : "Check Weather"}
             </button>
-            {error && <p className="error">{error}</p>}
             {weather && (
                 <div className="weather-info">
                     <h4>Weather Information:</h4>

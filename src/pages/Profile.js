@@ -7,7 +7,7 @@ import '../style/Profile.css';
 const Profile = () => {
     const { user } = useContext(UserContext);
     const [applications, setApplications] = useState([]);
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if (user) {
@@ -29,7 +29,7 @@ const Profile = () => {
                     setApplications(applicationsWithRoomNames);
                 })
                 .catch(err => {
-                    setMessage("Failed to load applications.");
+                    setError("Failed to load applications.");
                 })
         }
     }, [user]);
@@ -46,18 +46,18 @@ const Profile = () => {
             }
         } catch (err) {
             console.error("Error updating application status:", err);
-            setMessage("Failed to update application status.");
+            setError("Failed to update application status.");
         }
     };
 
     if (!user) {
-        return <p>Please log in to view your profile.</p>;
+        return <p className="error">Please log in to view your profile.</p>;
     }
 
     return (
         <div className="profile">
             <h2>{user.username}'s Applications</h2>
-            {message && <p className="message">{message}</p>}
+            {error && <p className="error">{error}</p>}
             <div className="applications">
                 {applications.length === 0 ? (
                     <p>No applications found.</p>
@@ -70,21 +70,21 @@ const Profile = () => {
                                     {app.roomName || app.roomId}
                                 </Link>
                             </p>
-                            <p><strong>Status:</strong> {app.status}</p>
+                            <p><strong>Status:</strong> {app.status.toUpperCase()}</p>
                             <button
-                                onClick={() => handleUpdateStatus(app.id, "accept")}
-                                disabled={!(app.status === "PENDING" || app.status === "ACCEPTED" || app.status === "REJECTED")}
+                                onClick={() => handleUpdateStatus(app.id, "accepted")}
+                                disabled={(app.status === "CANCELLED")}
                             >
                                 Accept
                             </button>
                             <button
-                                onClick={() => handleUpdateStatus(app.id, "reject")}
-                                disabled={!(app.status === "PENDING" || app.status === "ACCEPTED" || app.status === "REJECTED")}
+                                onClick={() => handleUpdateStatus(app.id, "rejected")}
+                                disabled={(app.status === "CANCELLED")}
                             >
                                 Reject
                             </button>
                             <button
-                                onClick={() => handleUpdateStatus(app.id, "cancel")}
+                                onClick={() => handleUpdateStatus(app.id, "cancelled")}
                             >
                                 Cancel
                             </button>

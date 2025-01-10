@@ -7,6 +7,7 @@ const Login = () => {
     const { login } = useContext(UserContext);
     const [formData, setFormData] = useState({username: '', password: ''});
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -18,9 +19,11 @@ const Login = () => {
         try{
             const response = await api.post('/api/users/login', formData);
             setMessage(response.data);
+            setError('');
             login({ username: formData.username });
         } catch (error) {
-            setMessage(error.response?.data || "An unexpected error occurred.");
+            setError(error.response.data || "An unexpected error occurred.");
+            setMessage('');
         }
     };
 
@@ -39,7 +42,8 @@ const Login = () => {
                     </div>
                     <button type="submit" >Login</button>
                 </form>
-                {message && <p>{message}</p>}
+                {message && <p className="message">{message}</p>}
+                {error && <p className="error">{error}</p>}
             </div>
         </div>
     );

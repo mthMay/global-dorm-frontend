@@ -16,6 +16,7 @@ const Header = () => {
         navigate('/');
     };
 
+    // code for navbar is modified from https://react-bootstrap.netlify.app/docs/components/navbar/ (React Bootstrap, n.d.)
     return(
         <Navbar bg='dark' variant='dark' expand='lg'>
             <Container fluid>

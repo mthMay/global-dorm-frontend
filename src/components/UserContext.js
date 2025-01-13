@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 
+// code modified from https://react.dev/reference/react/useContext (React, n.d.)
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
